@@ -354,7 +354,7 @@ class SJF(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Shortest Job First"))
         self.label.setText(_translate("MainWindow", "  Number of process :"))
         self.label_2.setText(_translate("MainWindow", "   Arrival Time"))
         self.pushButton.setText(_translate("MainWindow", "Run"))
@@ -510,12 +510,12 @@ class rr(object):
                                 # taken.remove(index)
                                 taken_count = taken_count - 1
 
-                        if (taken_count == 0):
-                            flag = 0
-                            x = 0
-                        else:
-                            x = ((x + 1) % len(taken))
-                            index = taken[x]
+                    if (taken_count == 0):
+                        flag = 0
+                        x = 0
+                    else:
+                        x = ((x + 1) % len(taken))
+                        index = taken[x]
 
         # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         waiting = []
@@ -637,7 +637,7 @@ class rr(object):
 "border-radius:12;")
         self.label_3.setObjectName("label_3")
         self.textEdit_4 = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit_4.setGeometry(QtCore.QRect(760, 210, 211, 401))
+        self.textEdit_4.setGeometry(QtCore.QRect(760, 210, 200, 50))
         self.textEdit_4.setStyleSheet("font: 75 20pt \"Nirmala UI\";")
         self.textEdit_4.setObjectName("textEdit_4")
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
@@ -658,7 +658,7 @@ class rr(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Round Robin"))
         self.label.setText(_translate("MainWindow", "  Number of process :"))
         self.label_2.setText(_translate("MainWindow", "   Arrival Time"))
         self.pushButton.setText(_translate("MainWindow", "Run"))
@@ -845,7 +845,7 @@ class FCFS(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "First Come First Serve"))
         self.label.setText(_translate("MainWindow", "  Number of process :"))
         self.label_2.setText(_translate("MainWindow", "   Arrival Time"))
         self.pushButton.setText(_translate("MainWindow", "Run"))
@@ -1259,7 +1259,7 @@ class priority(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Priority"))
         self.label.setText(_translate("MainWindow", "  Number of process :"))
         self.label_2.setText(_translate("MainWindow", "   Arrival Time"))
         self.pushButton.setText(_translate("MainWindow", "Run"))
@@ -1354,12 +1354,12 @@ class Ui_MainWindow(object):
         self.pushButton_4.clicked.connect(self.rr)
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Job Scheduler"))
         self.pushButton.setText(_translate("MainWindow", "FCFS"))
         self.pushButton_2.setText(_translate("MainWindow", "Priority"))
         self.pushButton_3.setText(_translate("MainWindow", "SJF"))
         self.pushButton_4.setText(_translate("MainWindow", "Round Robin"))
-        self.label.setText(_translate("MainWindow", "Choose the scheduler type :"))
+        self.label.setText(_translate("MainWindow", "Choose The Scheduler Type :"))
 
 
 if __name__ == "__main__":
