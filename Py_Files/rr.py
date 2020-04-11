@@ -166,12 +166,12 @@ class rr(object):
                                 # taken.remove(index)
                                 taken_count = taken_count - 1
 
-                        if (taken_count == 0):
-                            flag = 0
-                            x = 0
-                        else:
-                            x = ((x + 1) % len(taken))
-                            index = taken[x]
+                    if (taken_count == 0):
+                        flag = 0
+                        x = 0
+                    else:
+                        x = ((x + 1) % len(taken))
+                        index = taken[x]
 
         # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         waiting = []
@@ -293,7 +293,7 @@ class rr(object):
 "border-radius:12;")
         self.label_3.setObjectName("label_3")
         self.textEdit_4 = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit_4.setGeometry(QtCore.QRect(760, 210, 211, 401))
+        self.textEdit_4.setGeometry(QtCore.QRect(760, 210, 200, 50))
         self.textEdit_4.setStyleSheet("font: 75 20pt \"Nirmala UI\";")
         self.textEdit_4.setObjectName("textEdit_4")
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
