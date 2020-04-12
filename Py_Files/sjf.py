@@ -164,9 +164,9 @@ class SJF(object):
                                                         - Burst_Time_List[index_of_sepec_process])
                             else:
                                 self.draw(New_list_Process[index_Of_min], last_x, Arrival_Time_List[i + 1])
-                                last_x = Arrival_Time_List[i + 1]
                                 New_list_burst[index_Of_min] = New_list_burst[index_Of_min] - (
-                                            last_x - Arrival_Time_List[i])
+                                            Arrival_Time_List[i + 1] - last_x)
+                                last_x = Arrival_Time_List[i + 1]
                                 if New_list_burst[index_Of_min] == 0:
                                     Avr_waiting_Time.append(last_x - Arrival_Time_List[index_of_sepec_process]
                                                             - Burst_Time_List[index_of_sepec_process])
