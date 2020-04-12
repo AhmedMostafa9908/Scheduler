@@ -187,6 +187,7 @@ class priority(object):
                                 New_list_burst[index_Of_min] = New_list_burst[index_Of_min] - (
                                         last_x - Arrival_Time_List[i])
                                 if New_list_burst[index_Of_min] == 0:
+                                    New_priority[index_Of_min] = 0
                                     Avr_waiting_Time.append(last_x - Arrival_Time_List[index_of_sepec_process]
                                                             - Burst_Time_List[index_of_sepec_process])
 
@@ -200,10 +201,11 @@ class priority(object):
                                                         - Burst_Time_List[index_of_sepec_process])
                             else:
                                 self.draw(New_list_Process[index_Of_min], last_x, Arrival_Time_List[i + 1])
-                                 New_list_burst[index_Of_min] = New_list_burst[index_Of_min] - (
-                                            Arrival_Time_List[i + 1] - last_x)
+                                New_list_burst[index_Of_min] = New_list_burst[index_Of_min] - (
+                                        Arrival_Time_List[i + 1] - last_x)
                                 last_x = Arrival_Time_List[i + 1]
                                 if New_list_burst[index_Of_min] == 0:
+                                    New_priority[index_Of_min] = 0
                                     Avr_waiting_Time.append(last_x - Arrival_Time_List[index_of_sepec_process]
                                                             - Burst_Time_List[index_of_sepec_process])
 
@@ -213,10 +215,12 @@ class priority(object):
                                       New_list_burst[index_Of_min])
                             last_x = Arrival_Time_List[i] + New_list_burst[index_Of_min]
                             New_list_burst[index_Of_min] = 0
+                            New_priority[index_Of_min] = 0
                         else:
                             self.draw(New_list_Process[index_Of_min], last_x, last_x + New_list_burst[index_Of_min])
                             last_x = last_x + New_list_burst[index_Of_min]
                             New_list_burst[index_Of_min] = 0
+                            New_priority[index_Of_min] = 0
                             Avr_waiting_Time.append(last_x - Arrival_Time_List[index_of_sepec_process]
                                                     - Burst_Time_List[index_of_sepec_process])
 
@@ -234,10 +238,12 @@ class priority(object):
                         self.swapPositions(New_list_burst, x, y)
                         self.swapPositions(Arrived_List, x, y)
                         self.swapPositions(New_list_Process, x, y)
+                        self.swapPositions(New_priority,x,y)
                     elif New_priority[x] == New_priority[y]:
                         if Arrived_List[x] > Arrived_List[y]:
                             self.swapPositions(Arrived_List, x, y)
                             self.swapPositions(New_list_Process, x, y)
+                            self.swapPositions(New_list_burst, x, y)
             ##########################################################################
             # Drawing after last arrival time
             ##########################################################################
