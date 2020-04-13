@@ -14,6 +14,32 @@ import matplotlib.pyplot as plt
 import tkinter
 from tkinter import messagebox
 
+class Queue:
+    def __init__(self,l=None):
+        if(l == None):
+            self.q=[]
+        else:
+            self.q = list(l)
+
+    def __str__(self):
+        return str(self.q)
+    def __repr__(self):
+        return self.q
+
+    def push(self,elem):
+        self.q.append(elem)
+
+    def pop(self):
+        temp = self.q[0]
+        self.q = self.q[1:]
+        return temp
+
+    def empty(self):
+        if(len(self.q) == 0): return 1
+        return 0
+
+
+
 
 class SJF(object):
     def fig_init(self, processes_name, total_burst):
@@ -164,9 +190,9 @@ class SJF(object):
                                                         - Burst_Time_List[index_of_sepec_process])
                             else:
                                 self.draw(New_list_Process[index_Of_min], last_x, Arrival_Time_List[i + 1])
-                                last_x = Arrival_Time_List[i + 1]
                                 New_list_burst[index_Of_min] = New_list_burst[index_Of_min] - (
-                                            last_x - Arrival_Time_List[i])
+                                            Arrival_Time_List[i + 1] - last_x)
+                                last_x = Arrival_Time_List[i + 1]
                                 if New_list_burst[index_Of_min] == 0:
                                     Avr_waiting_Time.append(last_x - Arrival_Time_List[index_of_sepec_process]
                                                             - Burst_Time_List[index_of_sepec_process])
@@ -354,13 +380,14 @@ class SJF(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Shortest Job First"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "  Number of process :"))
         self.label_2.setText(_translate("MainWindow", "   Arrival Time"))
         self.pushButton.setText(_translate("MainWindow", "Run"))
         self.label_3.setText(_translate("MainWindow", "  Burst Time"))
         self.label_4.setText(_translate("MainWindow", "  Execution :"))
         self.radioButton.setText(_translate("MainWindow", " Preemptive"))
+
 
 class rr(object):
     def fig_init(self, processes_name, total_burst):
@@ -382,6 +409,8 @@ class rr(object):
         no = int(name[1:])
         self.gnt.broken_barh([(start_time, end_time - start_time)], ((no * 10) - 4, 7), facecolors=('tab:orange'))
 
+
+
     def Round_Robin(self, Processes_Names, Burst_Time_List, Arrival_Time_List, Number_Of_Processes, quantum):
         turn_around = [i for i in range(len(Processes_Names))]
         total = sum(Burst_Time_List) + 10 + max(Arrival_Time_List)
@@ -389,7 +418,6 @@ class rr(object):
         ##@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         # algorithim
         # first sort
-
         swapped = None
         for i in range(Number_Of_Processes):
             swapping = False
@@ -404,118 +432,88 @@ class rr(object):
                         Arrival_Time_List[j], Arrival_Time_List[j + 1] = Arrival_Time_List[j + 1], Arrival_Time_List[j]
                         Processes_Names[j], Processes_Names[j + 1] = Processes_Names[j + 1], Processes_Names[j]
                         Burst_Time_List[j], Burst_Time_List[j + 1] = Burst_Time_List[j + 1], Burst_Time_List[j]
-                        swapping = True
+                        swapped = True
             if (swapping == False): break
-
-        ########
+        ################
         Burst_Copy = list(Burst_Time_List)
         #########
-        count = [(1) for i in range(Number_Of_Processes)]
-        last_x = Arrival_Time_List[0]
-        taken = []
-        taken_count = 0
-        flag = 0
-        index = None
-        x = 0
-        while (sum(count) != 0):
-            i = 0
-            while (i < len(Processes_Names)):
-                if (last_x < Arrival_Time_List[i] and taken_count == 0):  # **************************8
-                    last_x = Arrival_Time_List[i]
+        termination =0
+        i=0
 
-                    ################
-                    if (Burst_Time_List[i] == 0):
-                        count[i] = 0
-                    else:
-                        if (Burst_Time_List[i] < quantum):
-                            duration = Burst_Time_List[i]
-                            Burst_Time_List[i] = 0
-                            self.draw(Processes_Names[i], last_x, last_x + duration)
-                            last_x = last_x + duration
-                            turn_around[i] = last_x - Arrival_Time_List[i]
-                            if (i in taken):
-                                # taken.remove(i)
-                                taken_count = taken_count - 1
-                        else:
-                            duration = quantum
-                            Burst_Time_List[i] = Burst_Time_List[i] - quantum
-                            taken.append(i)
-                            taken_count = taken_count + 1
-                            ###
-                            if (flag == 0):
-                                index = i
-                                flag = 1
-                            ####
-                            self.draw(Processes_Names[i], last_x, last_x + duration)
-                            last_x = last_x + duration
-                            if (Burst_Time_List[i] == 0):
-                                turn_around[i] = last_x - Arrival_Time_List[i]
-                                if (i in taken):
-                                    # taken.remove(i)
-                                    taken_count = taken_count - 1
-                    i = i + 1
-                elif (last_x >= Arrival_Time_List[i]):  # *********************************************************
-                    ################
-                    if (Burst_Time_List[i] == 0):
-                        count[i] = 0
-                    else:
-                        if (Burst_Time_List[i] < quantum):
-                            duration = Burst_Time_List[i]
-                            Burst_Time_List[i] = 0
-                            self.draw(Processes_Names[i], last_x, last_x + duration)
-                            last_x = last_x + duration
-                            turn_around[i] = last_x - Arrival_Time_List[i]
-                            if (i in taken):
-                                # taken.remove(i)
-                                taken_count = taken_count - 1
-                        else:
-                            duration = quantum
-                            Burst_Time_List[i] = Burst_Time_List[i] - quantum
-                            taken.append(i)
-                            taken_count = taken_count + 1
-                            ###
-                            if (flag == 0):
-                                index = i
-                                flag = 1
-                            ####
-                            self.draw(Processes_Names[i], last_x, last_x + duration)
-                            last_x = last_x + duration
-                            if (Burst_Time_List[i] == 0):
-                                turn_around[i] = last_x - Arrival_Time_List[i]
-                                if (i in taken):
-                                    # taken.remove(i)
-                                    taken_count = taken_count - 1
-                    i = i + 1
-                elif (last_x < Arrival_Time_List[i] and taken_count > 0):  # ***********************************
+        queue = Queue()
 
-                    if (Burst_Time_List[index] == 0):
-                        count[index] = 0
-                    else:
-                        ################
-                        if (Burst_Time_List[index] < quantum):
-                            duration = Burst_Time_List[index]
-                            Burst_Time_List[index] = 0
-                            self.draw(Processes_Names[index], last_x, last_x + duration)
-                            last_x = last_x + duration
-                            turn_around[index] = last_x - Arrival_Time_List[index]
-                            taken.remove(index)
-                            taken_count = taken_count - 1
-                        else:
-                            duration = quantum
-                            Burst_Time_List[index] = Burst_Time_List[index] - quantum
-                            self.draw(Processes_Names[index], last_x, last_x + duration)
-                            last_x = last_x + duration
-                            if (Burst_Time_List[index] == 0):
-                                turn_around[index] = last_x - Arrival_Time_List[index]
-                                # taken.remove(index)
-                                taken_count = taken_count - 1
+        flag=[0 for i in range (Number_Of_Processes)]
+        first_time=1
+        while(termination < Number_Of_Processes):
+            last_x = Arrival_Time_List[i]
+            queue.push([Processes_Names[i], Burst_Time_List[i]])
 
-                    if (taken_count == 0):
-                        flag = 0
-                        x = 0
+            while( not queue.empty()):
+
+                temp = queue.pop()
+                if(temp[1] <= quantum):
+                    duration = min(temp[1],quantum)
+                    self.draw(temp[0] , last_x, last_x +duration )
+                    old_x=last_x
+                    last_x=last_x+duration
+                    turn_around[ Processes_Names.index(temp[0])] = last_x-Arrival_Time_List[ Processes_Names.index(temp[0])]
+                    termination=termination+1
+                    flag[ Processes_Names.index(temp[0]) ] =1
+                    if (first_time):
+                        for it in range(1, len(Arrival_Time_List)):
+                            if (Arrival_Time_List[it] > last_x): break
+                            if (Arrival_Time_List[it] >= old_x and Arrival_Time_List[it] <= last_x and temp[0] !=
+                                    Processes_Names[it]):
+                                queue.push(
+                                    [Processes_Names[it], Burst_Time_List[it]])
                     else:
-                        x = ((x + 1) % len(taken))
-                        index = taken[x]
+                        for it in range(len(Arrival_Time_List)):
+                            if (Arrival_Time_List[it] > last_x): break
+                            if (Arrival_Time_List[it] > old_x and Arrival_Time_List[it] <= last_x and temp[0] !=
+                                    Processes_Names[it]):
+                                queue.push(
+                                    [Processes_Names[it], Burst_Time_List[it]])
+
+
+                else:
+                    duration=quantum
+                    self.draw(temp[0] , last_x, last_x +duration)
+                    old_x=last_x
+                    last_x=last_x+duration
+                    temp[1] = temp[1]-quantum
+
+                    if (first_time):
+                        for it in range(1,len(Arrival_Time_List)):
+                            if (Arrival_Time_List[it] > last_x): break
+                            if (Arrival_Time_List[it] >= old_x and Arrival_Time_List[it] <= last_x and temp[0] != Processes_Names[it]):
+                                queue.push(
+                                    [Processes_Names[it], Burst_Time_List[it]])
+                    else:
+                        for it in range(len(Arrival_Time_List)):
+                            if (Arrival_Time_List[it] > last_x): break
+                            if (Arrival_Time_List[it] > old_x and Arrival_Time_List[it] <= last_x and temp[0] != Processes_Names[it]):
+                                queue.push(
+                                    [Processes_Names[it], Burst_Time_List[it]])
+
+                    queue.push(temp)
+                    first_time = 0
+
+            ##if queue is empty
+            if (termination == Number_Of_Processes): break
+            else:
+                for f in range(Number_Of_Processes):
+                    if(flag[f] == 0):
+                        i=f
+                        break;
+
+
+
+
+
+
+
+
+
 
         # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         waiting = []
@@ -658,12 +656,13 @@ class rr(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Round Robin"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "  Number of process :"))
         self.label_2.setText(_translate("MainWindow", "   Arrival Time"))
         self.pushButton.setText(_translate("MainWindow", "Run"))
         self.label_3.setText(_translate("MainWindow", "  Burst Time"))
         self.label_4.setText(_translate("MainWindow", "   quantem"))
+
 class FCFS(object):
     def fig_init(self, processes_name, total_burst):
         self.fig, self.gnt = plt.subplots()  # must be global
@@ -694,11 +693,17 @@ class FCFS(object):
                     burst_time[j], burst_time[j + 1] = burst_time[j + 1], burst_time[j]
                     swapped = True
                 elif (arrival_time[j] == arrival_time[j + 1]):
-                    if (int(process_name[j][1:]) > int(process_name[j + 1][1:])):
+                    if (burst_time[j]>burst_time[j+1]):
                         arrival_time[j], arrival_time[j + 1] = arrival_time[j + 1], arrival_time[j]
                         process_name[j], process_name[j + 1] = process_name[j + 1], process_name[j]
                         burst_time[j], burst_time[j + 1] = burst_time[j + 1], burst_time[j]
                         swapped = True
+                    elif(burst_time[j]==burst_time[j+1]):
+                        if(int(process_name[j][1:]) > int(process_name[j + 1][1:])):
+                            arrival_time[j], arrival_time[j + 1] = arrival_time[j + 1], arrival_time[j]
+                            process_name[j], process_name[j + 1] = process_name[j + 1], process_name[j]
+                            burst_time[j], burst_time[j + 1] = burst_time[j + 1], burst_time[j]
+                            swapped = True
 
             if (swapped == False):
                 return
@@ -845,13 +850,13 @@ class FCFS(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "First Come First Serve"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "  Number of process :"))
         self.label_2.setText(_translate("MainWindow", "   Arrival Time"))
         self.pushButton.setText(_translate("MainWindow", "Run"))
         self.label_3.setText(_translate("MainWindow", "  Burst Time"))
 
-#from priority import priority
+
 class priority(object):
     def fig_init(self,processes_name, total_burst):
         self.fig, self.gnt = plt.subplots()  # must be global
@@ -1021,6 +1026,7 @@ class priority(object):
                                 New_list_burst[index_Of_min] = New_list_burst[index_Of_min] - (
                                         last_x - Arrival_Time_List[i])
                                 if New_list_burst[index_Of_min] == 0:
+                                    New_priority[index_Of_min] = 0
                                     Avr_waiting_Time.append(last_x - Arrival_Time_List[index_of_sepec_process]
                                                             - Burst_Time_List[index_of_sepec_process])
 
@@ -1034,10 +1040,11 @@ class priority(object):
                                                         - Burst_Time_List[index_of_sepec_process])
                             else:
                                 self.draw(New_list_Process[index_Of_min], last_x, Arrival_Time_List[i + 1])
-                                last_x = Arrival_Time_List[i + 1]
                                 New_list_burst[index_Of_min] = New_list_burst[index_Of_min] - (
-                                        last_x - Arrival_Time_List[i])
+                                        Arrival_Time_List[i + 1] - last_x)
+                                last_x = Arrival_Time_List[i + 1]
                                 if New_list_burst[index_Of_min] == 0:
+                                    New_priority[index_Of_min] = 0
                                     Avr_waiting_Time.append(last_x - Arrival_Time_List[index_of_sepec_process]
                                                             - Burst_Time_List[index_of_sepec_process])
 
@@ -1047,10 +1054,12 @@ class priority(object):
                                       New_list_burst[index_Of_min])
                             last_x = Arrival_Time_List[i] + New_list_burst[index_Of_min]
                             New_list_burst[index_Of_min] = 0
+                            New_priority[index_Of_min] = 0
                         else:
                             self.draw(New_list_Process[index_Of_min], last_x, last_x + New_list_burst[index_Of_min])
                             last_x = last_x + New_list_burst[index_Of_min]
                             New_list_burst[index_Of_min] = 0
+                            New_priority[index_Of_min] = 0
                             Avr_waiting_Time.append(last_x - Arrival_Time_List[index_of_sepec_process]
                                                     - Burst_Time_List[index_of_sepec_process])
 
@@ -1068,10 +1077,12 @@ class priority(object):
                         self.swapPositions(New_list_burst, x, y)
                         self.swapPositions(Arrived_List, x, y)
                         self.swapPositions(New_list_Process, x, y)
+                        self.swapPositions(New_priority,x,y)
                     elif New_priority[x] == New_priority[y]:
                         if Arrived_List[x] > Arrived_List[y]:
                             self.swapPositions(Arrived_List, x, y)
                             self.swapPositions(New_list_Process, x, y)
+                            self.swapPositions(New_list_burst, x, y)
             ##########################################################################
             # Drawing after last arrival time
             ##########################################################################
@@ -1259,7 +1270,7 @@ class priority(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Priority"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "  Number of process :"))
         self.label_2.setText(_translate("MainWindow", "   Arrival Time"))
         self.pushButton.setText(_translate("MainWindow", "Run"))

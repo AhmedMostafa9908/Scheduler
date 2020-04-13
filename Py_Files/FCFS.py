@@ -47,11 +47,17 @@ class FCFS(object):
                     burst_time[j], burst_time[j + 1] = burst_time[j + 1], burst_time[j]
                     swapped = True
                 elif (arrival_time[j] == arrival_time[j + 1]):
-                    if (int(process_name[j][1:]) > int(process_name[j + 1][1:])):
+                    if (burst_time[j]>burst_time[j+1]):
                         arrival_time[j], arrival_time[j + 1] = arrival_time[j + 1], arrival_time[j]
                         process_name[j], process_name[j + 1] = process_name[j + 1], process_name[j]
                         burst_time[j], burst_time[j + 1] = burst_time[j + 1], burst_time[j]
                         swapped = True
+                    elif(burst_time[j]==burst_time[j+1]):
+                        if(int(process_name[j][1:]) > int(process_name[j + 1][1:])):
+                            arrival_time[j], arrival_time[j + 1] = arrival_time[j + 1], arrival_time[j]
+                            process_name[j], process_name[j + 1] = process_name[j + 1], process_name[j]
+                            burst_time[j], burst_time[j + 1] = burst_time[j + 1], burst_time[j]
+                            swapped = True
 
             if (swapped == False):
                 return
