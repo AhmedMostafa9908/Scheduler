@@ -36,8 +36,8 @@ class Queue:
 
     def empty(self):
         if(len(self.q) == 0): return 1
-        return 0
-
+        return 0 ##thith #this ca
+#this class is made for the rr algorithim
 
 
 
